@@ -1,0 +1,154 @@
+/* 
+   AJUSTES GENERALES
+*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/*
+   FONDO
+*/
+.background {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  background: radial-gradient(circle at 20% 10%, #ff4040 0%, #6d1010 50%, #440d0d 100%);
+  overflow: hidden;
+}
+
+.background::before {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  top: -80px;
+  left: -100px;
+  background: radial-gradient(circle, rgba(255, 0, 0, 0.8), transparent 70%);
+  filter: blur(90px);
+}
+
+.background::after {
+  content: "";
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  bottom: -120px;
+  right: -60px;
+  background: radial-gradient(circle, rgba(255, 166, 0, 0.85), transparent 70%);
+  filter: blur(100px);
+}
+
+/*
+   PANEL PRINCIPAL
+ */
+.panel {
+  width: 95%;
+  max-width: 1200px;
+  height: 600px;
+  margin: 70px auto;
+  border-radius: 25px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  padding: 15px 18px 25px;
+}
+
+/* 
+   BARRA DE MENÚ TRANSPARENTE
+*/
+.menu-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1.5px solid #fff;
+  border-radius: 90px;
+  padding: 4px 4px;
+  backdrop-filter: blur(10px); /* Efecto vidrio */
+  -webkit-backdrop-filter: blur(10px);
+  overflow-x: auto;
+  scrollbar-width: none;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Sombra suave para resaltar */
+}
+
+.menu-btn-non-active{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  background:#7d0d0d;
+  border: 1.5px solid #fff;
+  border-radius: 80px;
+  padding: 4px 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Sombra suave para resaltar */
+}
+
+.menu-bar::-webkit-scrollbar {
+  display: none;
+}
+
+/* 
+   BOTONES
+ */
+.menu-btn {
+  background: #fff;
+  border: none;
+  color: #222;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 8px 22px;
+  margin: 5px;
+  cursor: default;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.menu-btn.active {
+  background: #000;
+  color: #fff;
+  font-weight: 600;
+}
+
+/*
+   CONTENIDO
+ */
+.content-box {
+  width: 100%;
+  height: 480px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 22px;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  margin-top: 18px;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+/* 
+   RESPONSIVE
+ */
+@media (max-width: 700px) {
+  .panel {
+    margin: 40px auto;
+    padding: 12px;
+  }
+  .menu-btn {
+    padding: 7px 15px;
+    font-size: 0.8rem;
+  }
+  .content-box {
+    height: 220px;
+  }
+}
