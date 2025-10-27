@@ -64,40 +64,38 @@ body, html {
 }
 
 /* 
-   BARRA DE MENÚ TRANSPARENTE
+   BARRA DE MENÚ TRANSPARENTE (GRIS)
 */
 .menu-bar {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: nowrap;
   background: rgba(255, 255, 255, 0.78);
   border: 1.5px solid #fff;
   border-radius: 90px;
-  padding: 4px 4px;
-  backdrop-filter: blur(10px); /* Efecto vidrio */
+  padding: 4px 18px;
+  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  overflow-x: auto;
-  scrollbar-width: none;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Sombra suave para resaltar */
+  overflow: visible;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
-.menu-btn-non-active{
+/* 
+   BARRA DE MENÚ ROJA (ENCIMA DEL GRIS)
+*/
+.menu-btn-non-active {
+  position: absolute;
+  top: 50%;
+  left: 200px; /* distancia respecto al botón “Bienvenida” */
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  background:#7d0d0d;
+  background: #7d0d0d;
   border: 1.5px solid #fff;
-  border-radius: 80px;
-  padding: 4px 4px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Sombra suave para resaltar */
-}
-
-.menu-bar::-webkit-scrollbar {
-  display: none;
+  border-radius: 90px;
+  padding: 4px 56px;
+  z-index: 2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* 
@@ -110,17 +108,23 @@ body, html {
   border-radius: 25px;
   font-size: 0.9rem;
   font-weight: 500;
-  padding: 8px 22px;
+  padding: 8px 25px;
   margin: 5px;
-  cursor: default;
-  white-space: nowrap;
+  cursor: pointer;
   transition: all 0.3s ease;
+  
 }
 
 .menu-btn.active {
   background: #000;
   color: #fff;
   font-weight: 600;
+}
+
+
+.menu-btn-non-active .menu-btn:last-child {
+  margin-left: 70px; /* espacio adicional solo para "Cerrar" */
+  
 }
 
 /*
@@ -147,6 +151,9 @@ body, html {
   .menu-btn {
     padding: 7px 15px;
     font-size: 0.8rem;
+  }
+  .menu-btn-non-active {
+    left: 100px;
   }
   .content-box {
     height: 220px;
