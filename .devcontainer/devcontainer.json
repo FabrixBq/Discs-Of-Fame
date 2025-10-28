@@ -1,0 +1,11 @@
+{
+    "name": "Discs Of Fame Dev Container",
+    "build": { "dockerfile": "Dockerfile" },
+    "workspaceFolder": "/workspace",
+    "mounts": [
+      "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+    ],
+    "features": { "ghcr.io/devcontainers/features/git:1": {} },
+    "postCreateCommand": "git config --global user.name 'fabrixbq' && git config --global user.email 'becerraquezadaf@gmail.com'"
+}
+  
