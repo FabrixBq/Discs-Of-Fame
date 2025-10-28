@@ -1,9 +1,12 @@
 from flask import Blueprint, jsonify
 from database import get_connection
 
+# Define el Blueprint para rental
 rental_bp = Blueprint('rental_bp', __name__, url_prefix='/rentas')
+
 #SOLO CODIGO PRUEBA
 @rental_bp.route('/', methods=['GET'])
+
 def listar_rentas():
     conn = get_connection()
     if not conn:
@@ -26,3 +29,23 @@ def listar_rentas():
             "last_update": str(row[5])
         })
     return jsonify(rentas)
+
+def listar_inventarios():
+    conn = get_connection()
+    if not conn:
+        return jsonify({"error": "No se pudo conectar a la base de datos"}), 500
+    
+    cur = conn.cursor()
+    cur.execute("SELECT inventory_id, film_id, store_id, last_update FROM inventory;")
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+
+    inventario = []
+    for row in rows:
+        inventario.append({
+            "inventory_id": row[0],
+            "film_id": row[1],
+            "store_id": row[2],
+            "last_update": str(row[3])
+        })
