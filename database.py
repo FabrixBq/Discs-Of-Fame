@@ -9,7 +9,7 @@ def get_connection():
     try:
         connection = psycopg2.connect(
             host=os.getenv("DB_HOST", "localhost"),
-            database=os.getenv("DB_NAME", "renta_dvd"),
+            database=os.getenv("DB_NAME", "dvdrental"),
             user=os.getenv("DB_USER"),
             password=os.getenv("DB_PASS"),
             port=os.getenv("DB_PORT", "5432") 
