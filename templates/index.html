@@ -9,23 +9,38 @@
 </head>
 <body>
   <div class="background">
+    <div class="logo-container">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
+    </div>
     <div class="panel">
       <div class="menu-bar">
         <button class="menu-btn active">Bienvenida</button>
 
         <div class="menu-btn-non-active">
-          <button class="menu-btn">Renta</button>
-          <button class="menu-btn">Cancelación</button>
-          <button class="menu-btn">Devolución</button>
-          <button class="menu-btn">Listas</button>
-          <button class="menu-btn">Ganancias staff</button>
-          <button class="menu-btn">Cerrar</button>
+          <button class="menu-btn" id="btn-renta">Renta</button>
+          <button class="menu-btn" id="bton-cancelacion">Cancelación</button>
+          <button class="menu-btn" id="bton-devolucion">Devolución</button>
+          <div class="dropdown-container">
+            <button class="menu-btn" id="bton-listas">Listas</button>
+            <div class="dropdown-menu">
+              <a href="#" class="dropdown-item">Rentas por cliente</a>
+              <a href="#" class="dropdown-item">DVD's no devueltos</a>
+              <a href="#" class="dropdown-item">DVD's mas rentados</a>
+            </div>
+          </div>
+          <div class="listas">
+            
+          </div>
+          <button class="menu-btn" id="bton-ganancias">Ganancias staff</button>
+          <button class="menu-btn" id="bton-cerrar">Cerrar</button> 
         </div>
       </div>
-
-      <div class="content-box"></div>
+      <div class="content-box" id="contenido">
+        <!-- El contenido se actualizará aquí -->
+      </div>
     </div>
   </div>
+  <script src="{{ url_for('static', filename='navegacion.js') }}"></script>
 </body>
 </html>
 
