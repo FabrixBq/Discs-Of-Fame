@@ -150,3 +150,73 @@ body {
   flex-direction: column;
   gap: 20px;
 }
+
+#ticket-container {
+  margin-top: 25px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.ticket-cuadro {
+  background: rgba(40, 20, 20, 0.9);
+  border-radius: 12px;
+  max-width: 550px;  
+  padding: 20px 25px 45px 25px; 
+  color: #fff;
+  text-align: left;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+  width: 90%;
+  animation: aparecer 0.3s ease forwards;
+}
+
+.ticket-cuadro.exito {
+  border: 2px solid rgba(255, 220, 120, 0.9);
+}
+
+.ticket-cuadro.error {
+  border: 2px solid rgba(255, 60, 60, 0.9);
+  text-align: center;
+}
+
+.ticket-cuadro h3 {
+  color: rgba(255, 220, 120, 0.9);
+  margin-bottom: 10px;
+}
+
+.ticket-btns {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn-palomita,
+.btn-tacha {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: transform 0.2s;
+}
+
+.btn-palomita {
+  background: rgba(255, 220, 120, 0.8);
+  color: #000;
+}
+
+.btn-tacha {
+  background: rgba(200, 40, 40, 0.8);
+  color: #fff;
+}
+
+.btn-palomita:hover,
+.btn-tacha:hover {
+  transform: scale(1.1);
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
