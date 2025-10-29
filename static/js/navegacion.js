@@ -115,10 +115,10 @@ function listas(){
     contenido.innerHTML = `
       <div class="tabla-container">
         <div class="busqueda-container">
-          <input type="text" class="busqueda-input" placeholder="Buscar cliente...">
+          <input id="busqueda_input" type="text" class="busqueda-input" placeholder="Buscar cliente...">
         </div>
         <div class="tabla-scroll">
-          <table class="tabla-rentas">
+          <table id="tabla-rentas" class="tabla-rentas">
             <thead>
               <tr>
                 <th>ID Cliente</th>
