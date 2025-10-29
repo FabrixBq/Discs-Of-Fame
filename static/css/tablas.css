@@ -1,0 +1,83 @@
+/* TABLAS - Estilo general para todas las tablas */
+.tabla-container {
+    width: 95%;
+    height: 90%;
+    background: rgba(60, 30, 30, 0.8);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.busqueda-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.busqueda-input {
+    background: rgba(120, 120, 120, 0.5);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 15px;
+    color: #fff;
+    width: 300px;
+    outline: none;
+}
+
+.busqueda-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.tabla-scroll {
+    flex: 1;
+    overflow-y: auto;
+    border-radius: 8px;
+    background: rgba(40, 20, 20, 0.6);
+}
+
+.tabla-rentas {
+    width: 100%;
+    border-collapse: collapse;
+    color: #fff;
+}
+
+.tabla-rentas th {
+    background: rgba(150, 20, 20, 0.8);
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.tabla-rentas td {
+    padding: 10px 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tabla-rentas tr:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Scrollbar personalizado */
+.tabla-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.tabla-scroll::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.tabla-scroll::-webkit-scrollbar-thumb {
+    background: rgba(150, 20, 20, 0.6);
+    border-radius: 4px;
+}
+
+.tabla-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(200, 30, 30, 0.8);
+}
