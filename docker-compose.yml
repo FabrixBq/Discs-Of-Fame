@@ -27,7 +27,7 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgres://postgres:postgres@db:5432/dvdrental
+      DATABASE_URL: postgres://postgres:123456@db:5432/dvdrental
 
 volumes:
   dvdrental_data:

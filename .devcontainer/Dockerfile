@@ -9,3 +9,8 @@ WORKDIR /workspace
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt || echo "No requirements.txt found"
 
+# Expone el puerto donde Flask escuchará
+EXPOSE 5000
+
+# Comando para iniciar la aplicación Flask
+CMD ["python", "app.py"]

@@ -33,3 +33,32 @@ def listar_dvds():
             "last_update": str(row[10])
         })
     return jsonify(dvds)
+
+def buscar_pelicula(title):
+    conn = get_connection()
+    if not conn:
+        return jsonify({"error": "No se pudo conectar a la base de datos"}), 500
+
+    cur = conn.cursor()
+    query = "SELECT film_id, title, description, release_year, language_id, rental_duration, rental_rate, length, replacement_cost, rating, last_update FROM film WHERE title ILIKE %s;"
+    cur.execute(query, ('%' + title + '%',))
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+
+    dvds = []
+    for row in rows:
+        dvds.append({
+            "film_id": row[0],
+            "title": row[1],
+            "description": row[2],
+            "release_year": row[3],
+            "language_id": row[4],
+            "rental_duration": row[5],
+            "rental_rate": str(row[6]),
+            "length": row[7],
+            "replacement_cost": str(row[8]),
+            "rating": row[9],
+            "last_update": str(row[10])
+        })
+    return jsonify(dvds)
