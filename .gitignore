@@ -1,0 +1,53 @@
+# ============================
+# ARCHIVOS Y CARPETAS PYTHON
+# ============================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# ============================
+# ENTORNOS VIRTUALES
+# ============================
+venv/
+env/
+.venv/
+.env/
+
+# ============================
+# CONFIGURACIÓN LOCAL / IDE
+# ============================
+.vscode/
+.idea/
+*.code-workspace
+
+# ============================
+# ARCHIVOS DE LOGS O TEMPORALES
+# ============================
+*.log
+*.bak
+*.tmp
+*.swp
+
+# ============================
+# CONFIGURACIÓN DE ENTORNO Y CREDENCIALES
+# ============================
+# Archivo de variables de entorno (claves, contraseñas, etc.)
+.env
+
+# ============================
+# ARCHIVOS DE BASE DE DATOS / BACKUPS
+# ============================
+*.tar
+*.sql
+*.dump
+
+# ============================
+# ARCHIVOS Y CARPETAS ESPECÍFICOS DE DOCKER
+# ============================
+*.pid
+*.sock
+*.seed
+docker-compose.override.yml
