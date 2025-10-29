@@ -1,0 +1,31 @@
+# Archivos y carpetas innecesarias para la imagen
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+
+# Archivos de configuración locales
+.env
+.vscode/
+.idea/
+
+# Carpetas de datos o dumps
+dvd_dat/
+*.tar
+*.sql
+
+# Git
+.git/
+.gitignore
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos temporales
+*.tmp
+*.swp
+*.bak
