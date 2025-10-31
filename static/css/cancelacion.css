@@ -1,0 +1,603 @@
+
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+
+.app-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #b91c1c 0%, #dc2626 50%, #f97316 100%);
+}
+
+.main-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+
+.nav-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nav-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 9999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1rem;
+}
+
+.nav-btn-light {
+  background-color: white;
+  color: black;
+}
+
+.nav-btn-light:hover {
+  background-color: #f3f4f6;
+}
+
+.nav-btn-dark {
+  background-color: #7f1d1d;
+  color: white;
+  border: 2px solid white;
+}
+
+.nav-btn-dark:hover {
+  background-color: #991b1b;
+}
+
+
+.list-options {
+  display: none;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.list-option-btn {
+  padding: 0.5rem 1rem;
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.list-option-btn:hover {
+  background-color: #f3f4f6;
+}
+
+
+.contenido {
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  min-height: 500px;
+}
+
+.welcome-message {
+  color: white;
+  text-align: center;
+}
+
+.welcome-message h1 {
+  font-size: 2.25rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.welcome-message p {
+  font-size: 1.25rem;
+}
+
+
+.renta-container {
+  color: white;
+}
+
+.renta-form {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.columna-izquierda,
+.columna-derecha {
+  flex: 1;
+}
+
+.campo {
+  margin-bottom: 20px;
+}
+
+.campo label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.input-icon {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.input-icon input,
+.input-icon select {
+  flex: 1;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.input-icon input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.input-icon select {
+  cursor: pointer;
+}
+
+.input-icon select option {
+  background-color: #333;
+  color: white;
+}
+
+.btn-lupa,
+.btn-add {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  transition: opacity 0.2s;
+}
+
+.btn-lupa {
+  background-color: #8b0000;
+}
+
+.btn-add {
+  background-color: #d4af37;
+}
+
+.btn-lupa:hover,
+.btn-add:hover {
+  opacity: 0.8;
+}
+
+.divider {
+  width: 2px;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin: 0 20px;
+}
+
+.fechas {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.campo-fecha label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.date-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+.acciones {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.btn-confirmar,
+.btn-limpiar {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-confirmar {
+  background-color: #d4af37;
+  color: white;
+}
+
+.btn-limpiar {
+  background-color: #8b0000;
+  color: white;
+}
+
+.btn-confirmar:hover,
+.btn-limpiar:hover {
+  opacity: 0.8;
+}
+
+
+.ticket-cuadro {
+  background-color: rgba(80, 60, 60, 0.7);
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.ticket-cuadro.exito {
+  border: 2px solid #d4af37;
+}
+
+.ticket-cuadro.error {
+  border: 2px solid #8b0000;
+}
+
+.ticket-cuadro h3 {
+  margin-bottom: 15px;
+  color: #d4af37;
+}
+
+.ticket-cuadro p {
+  margin: 8px 0;
+  color: white;
+}
+
+.ticket-msg {
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+.ticket-btns {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn-palomita,
+.btn-tacha {
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  color: white;
+  transition: transform 0.2s;
+}
+
+.btn-palomita {
+  background-color: rgba(212, 175, 55, 0.8);
+}
+
+.btn-tacha {
+  background-color: rgba(139, 0, 0, 0.8);
+}
+
+.btn-palomita:hover,
+.btn-tacha:hover {
+  transform: scale(1.1);
+}
+
+
+.tabla-container {
+  color: white;
+}
+
+.busqueda-container {
+  margin-bottom: 20px;
+}
+
+.busqueda-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 16px;
+}
+
+.busqueda-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.tabla-scroll {
+  max-height: 500px;
+  overflow-y: auto;
+  border-radius: 10px;
+}
+
+.tabla-rentas {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.tabla-rentas thead {
+  position: sticky;
+  top: 0;
+  background-color: #8b0000;
+  z-index: 10;
+}
+
+.tabla-rentas th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  color: white;
+}
+
+.tabla-rentas td {
+  padding: 12px 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tabla-rentas tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+.cancelacion-container {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.cancelacion-form {
+  flex: 1;
+}
+
+.cancelacion-title {
+  color: white;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.cancelacion-subtitle {
+  color: white;
+  margin-bottom: 15px;
+}
+
+.cancelacion-input-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.cancelacion-input {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  flex: 1;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.cancelacion-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.btn-search-rental {
+  padding: 10px 15px;
+  background-color: #8b0000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-search-rental:hover {
+  opacity: 0.8;
+}
+
+.btn-confirm-rental {
+  padding: 10px 15px;
+  background-color: #d4af37;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-confirm-rental:hover {
+  opacity: 0.8;
+}
+
+.cancelacion-ticket-container {
+  flex: 1;
+}
+
+
+.search-popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-popup.active {
+  display: flex;
+}
+
+.search-popup-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  color: #222; 
+  border-radius: 10px;
+  max-width: 900px;
+  width: 90%;
+  box-sizing: border-box;
+}
+
+.search-popup-title {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.search-popup-table-container {
+  max-height: 400px;
+  overflow-y: auto;    /* activa el scroll vertical */
+  overflow-x: hidden;  /* evita scroll horizontal innecesario */
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.search-popup-table-container::-webkit-scrollbar {
+  width: 8px;
+}
+.search-popup-table-container::-webkit-scrollbar-thumb {
+  background-color: #aaa;
+  border-radius: 4px;
+}
+.search-popup-table-container::-webkit-scrollbar-thumb:hover {
+  background-color: #888;
+}
+
+.search-popup-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.search-popup-table thead {
+  background-color: #8b0000;
+  color: white;
+}
+
+.search-popup-table th {
+  padding: 10px;
+  text-align: left;
+}
+
+.search-popup-table td {
+  padding: 10px;
+}
+
+.search-popup-table tbody tr {
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.search-popup-table tbody tr:hover {
+  background-color: #f3f4f6;
+}
+
+.btn-close-popup {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #8b0000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-close-popup:hover {
+  opacity: 0.8;
+}
+
+
+.cancelacion-ticket {
+  background-color: rgba(80, 60, 60, 0.7);
+  width: 600px; 
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+}
+
+.cancelacion-ticket p {
+  margin: 8px 0;
+}
+
+.cancelacion-ticket-actions {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+/* efecto al pasar el mouse */
+.cancelacion-ticket:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.btn-cancel-operation {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(139, 0, 0, 0.8);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  transition: transform 0.2s;
+}
+
+.btn-cancel-operation:hover {
+  transform: scale(1.1);
+}
+
+.btn-confirm-cancellation {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(212, 175, 55, 0.8);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  transition: transform 0.2s;
+}
+
+.btn-confirm-cancellation:hover {
+  transform: scale(1.1);
+}
