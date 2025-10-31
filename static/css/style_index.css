@@ -78,6 +78,7 @@ body, html {
   -webkit-backdrop-filter: blur(10px);
   overflow: visible;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  z-index: 1000;
 }
 
 /* 
@@ -90,6 +91,9 @@ body, html {
   justify-content: center;
   align-items: center;
   overflow: hidden; /* evita scroll innecesario */
+  position: relative;
+  overflow: visible;
+  z-index: 1;
 }
 /* 
    BARRA DE MENÚ ROJA (ENCIMA DEL GRIS)
@@ -151,7 +155,7 @@ body, html {
 
 .dropdown-container:hover .menu-btn,
 .dropdown-menu:hover {
-  background: #f0f0f0; /* Mismo color de hover */
+  background: #ffffff; /* Mismo color de hover */
   color: #000;
 }
 
@@ -168,7 +172,7 @@ body, html {
   min-width: 150px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  z-index: 1000;
+  z-index: 9999;
   margin-top: 0; /* Sin espacio entre botón y menú */
 }
 
@@ -177,11 +181,12 @@ body, html {
   padding: 10px 15px;
   text-decoration: none;
   color: #333;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #9e9494;
 }
 
 .dropdown-item:hover {
-  background: #f5f5f5;
+  background: #4d1717;
+  color: white;
 }
 
 /*

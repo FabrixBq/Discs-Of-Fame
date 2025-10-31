@@ -15,6 +15,7 @@
     <div class="logo-container">
       <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
     </div>
+
     <div class="panel">
       <div class="menu-bar">
         <button class="menu-btn active">Bienvenida</button>
@@ -28,21 +29,22 @@
             <div class="dropdown-menu">
               <a href="#" class="dropdown-item" id="op_RC">Rentas por cliente</a>
               <a href="#" class="dropdown-item" id="DVDnd">DVD's no devueltos</a>
-              <a href="#" class="dropdown-item" id="DVDmr">DVD's mas rentados</a>
+              <a href="#" class="dropdown-item" id="DVDmr">DVD's más rentados</a>
             </div>
           </div>
-          <div class="listas">
-            
-          </div>
+
           <button class="menu-btn" id="bton-ganancias">Ganancias staff</button>
           <button class="menu-btn" id="bton-cerrar">Cerrar</button> 
         </div>
       </div>
+
+      <!-- Contenedor de contenido dinamico -->
       <div class="content-box" id="contenido">
-        <!-- El contenido se actualizará aquí -->
+        <!-- Aquí se cargan formularios y tablas -->
       </div>
     </div>
   </div>
+
   <script src="{{ url_for('static', filename='js/navegacion.js') }}"></script>
 </body>
 </html>
