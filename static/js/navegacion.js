@@ -170,6 +170,11 @@ function formulario_cancelacion() {
     { id: 1, cliente: "Juan Pérez", pelicula: "The Matrix", empleado: "Emma", renta: "2024-01-10", devolucion: "2024-01-17", costo: "$4.99" },
     { id: 2, cliente: "María García", pelicula: "Inception", empleado: "Carlos", renta: "2024-02-12", devolucion: "2024-02-19", costo: "$5.50" },
     { id: 3, cliente: "Luis López", pelicula: "Interstellar", empleado: "Sofía", renta: "2024-03-01", devolucion: "2024-03-08", costo: "$6.00" },
+    { id: 4, cliente: "Ana Martínez", pelicula: "Avatar", empleado: "Miguel", renta: "2024-04-15", devolucion: "2024-04-22", costo: "$7.25" },
+    { id: 5, cliente: "Pedro Sánchez", pelicula: "Titanic", empleado: "Laura", renta: "2024-05-20", devolucion: "2024-05-27", costo: "$5.75" },
+        { id: 1, cliente: "Juan Pérez", pelicula: "The Matrix", empleado: "Emma", renta: "2024-01-10", devolucion: "2024-01-17", costo: "$4.99" },
+    { id: 2, cliente: "María García", pelicula: "Inception", empleado: "Carlos", renta: "2024-02-12", devolucion: "2024-02-19", costo: "$5.50" },
+    { id: 3, cliente: "Luis López", pelicula: "Interstellar", empleado: "Sofía", renta: "2024-03-01", devolucion: "2024-03-08", costo: "$6.00" }
   ];
 
   /* --- Buscar renta (abre popup) --- */
