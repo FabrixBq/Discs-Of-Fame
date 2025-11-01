@@ -66,11 +66,6 @@ function formulario_renta() {
               <label>Día de Renta :</label>
               <input type="datetime-local" class="date-input" id="fechaRenta">
             </div>
-
-            <div class="campo-fecha">
-              <label>Día de Devolución :</label>
-              <input type="datetime-local" class="date-input" id="fechaDevolucion">
-            </div>
           </div>
 
           <!-- Contenedor del ticket -->
@@ -146,16 +141,6 @@ function formulario_cancelacion() {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   `;
 
-  /* --- Variables internas --- */
-  let rentalData = {
-    rental_id: null,
-    cliente_atendido: null,
-    pelicula_rentada: null,
-    empleado_que_atendio: null,
-    dia_de_renta: null,
-    dia_de_devolucion: null,
-    costo: null,
-  };
 
   const rentalIdInput = document.getElementById("rental-id-input");
   const searchBtn = document.getElementById("search-rental-btn");
@@ -165,24 +150,10 @@ function formulario_cancelacion() {
   const closePopupBtn = document.getElementById("close-popup-btn");
   const searchResultsBody = document.getElementById("search-results-body");
 
-  /* --- Datos simulados (demo) --- */
-  const mockRentalData = [
-    { id: 1, cliente: "Juan Pérez", pelicula: "The Matrix", empleado: "Emma", renta: "2024-01-10", devolucion: "2024-01-17", costo: "$4.99" },
-    { id: 2, cliente: "María García", pelicula: "Inception", empleado: "Carlos", renta: "2024-02-12", devolucion: "2024-02-19", costo: "$5.50" },
-    { id: 3, cliente: "Luis López", pelicula: "Interstellar", empleado: "Sofía", renta: "2024-03-01", devolucion: "2024-03-08", costo: "$6.00" },
-    { id: 4, cliente: "Ana Martínez", pelicula: "Avatar", empleado: "Miguel", renta: "2024-04-15", devolucion: "2024-04-22", costo: "$7.25" },
-    { id: 5, cliente: "Pedro Sánchez", pelicula: "Titanic", empleado: "Laura", renta: "2024-05-20", devolucion: "2024-05-27", costo: "$5.75" },
-        { id: 1, cliente: "Juan Pérez", pelicula: "The Matrix", empleado: "Emma", renta: "2024-01-10", devolucion: "2024-01-17", costo: "$4.99" },
-    { id: 2, cliente: "María García", pelicula: "Inception", empleado: "Carlos", renta: "2024-02-12", devolucion: "2024-02-19", costo: "$5.50" },
-    { id: 3, cliente: "Luis López", pelicula: "Interstellar", empleado: "Sofía", renta: "2024-03-01", devolucion: "2024-03-08", costo: "$6.00" }
-  ];
-
   /* --- Buscar renta (abre popup) --- */
   searchBtn.addEventListener("click", () => {
     const searchValue = rentalIdInput.value.trim();
-    const filteredResults = searchValue
-      ? mockRentalData.filter((item) => item.id.toString().includes(searchValue))
-      : mockRentalData;
+    const filteredResults = buscarRentas(searchValue);
 
     searchResultsBody.innerHTML = filteredResults
       .map(
@@ -217,21 +188,10 @@ function formulario_cancelacion() {
   /* --- Confirmar cancelación --- */
   confirmBtn.addEventListener("click", () => {
     const rentalId = rentalIdInput.value.trim();
-    if (!rentalId) return;
-
     const mockData = mockRentalData.find((item) => item.id.toString() === rentalId);
     if (!mockData) return;
 
-    rentalData = {
-      rental_id: rentalId,
-      cliente_atendido: mockData.cliente,
-      pelicula_rentada: mockData.pelicula,
-      empleado_que_atendio: mockData.empleado,
-      dia_de_renta: mockData.renta,
-      dia_de_devolucion: mockData.devolucion,
-      costo: mockData.costo,
-    };
-
+    rentalData = { ...mockData, rental_id: rentalId };
     mostrarTicketCancelacion(rentalData);
   });
 
@@ -239,11 +199,11 @@ function formulario_cancelacion() {
   function mostrarTicketCancelacion(data) {
     ticketContainer.innerHTML = `
       <div class="cancelacion-ticket">
-        <p><strong>Cliente:</strong> ${data.cliente_atendido}</p>
-        <p><strong>Película:</strong> ${data.pelicula_rentada}</p>
-        <p><strong>Empleado:</strong> ${data.empleado_que_atendio}</p>
-        <p><strong>Renta:</strong> ${data.dia_de_renta}</p>
-        <p><strong>Devolución:</strong> ${data.dia_de_devolucion}</p>
+        <p><strong>Cliente:</strong> ${data.cliente}</p>
+        <p><strong>Película:</strong> ${data.pelicula}</p> 
+        <p><strong>Empleado:</strong> ${data.empleado}</p>
+        <p><strong>Renta:</strong> ${data.renta}</p>
+        <p><strong>Devolución:</strong> ${data.devolucion}</p>
         <p><strong>Costo:</strong> ${data.costo}</p>
         <div class="cancelacion-ticket-actions">
           <button id="cancel-operation-btn" class="btn-cancel-operation"><i class="fas fa-times"></i></button>
@@ -259,6 +219,144 @@ function formulario_cancelacion() {
       ticketContainer.innerHTML = "";
       rentalIdInput.value = "";
       rentalData = {};
+    });
+  }
+}//acabado formulario cancelacion
+
+function formulario_devolucion() {
+  contenido.innerHTML = `
+  <div id="modulo-devolucion">
+    <div class="devolucion-container">
+      <div class="devolucion-form">
+         <h2 class="devolucion-title">Devolución de renta:</h2>
+         <p class="devolucion-subtitle">Ingrese el ID de renta</p>
+
+        <div class="devolucion-input-group">
+          <input 
+            type="text" 
+            id="rental-id-input" 
+            class="devolucion-input"
+            placeholder="Ingrese ID de renta..." 
+          />
+          <button id="search-rental-btn" class="btn-search-rental"><i class="fas fa-search"></i></button>
+          <button id="confirm-rental-btn" class="btn-confirm-rental"><i class="fas fa-plus"></i></button>
+        </div>
+      </div>
+
+      <div id="devolucion-ticket-container" class="devolucion-ticket-container"></div>
+    </div>
+
+    <div id="search-popup" class="search-popup">
+      <div class="search-popup-content">
+        <h3 class="search-popup-title">Resultados de búsqueda</h3>
+        <div class="search-popup-table-container">
+          <table class="search-popup-table">
+            <thead>
+              <tr>
+                <th>Rental ID</th>
+                <th>Cliente</th>
+                <th>Película</th>
+                <th>Empleado</th>
+                <th>Fecha de Renta</th>
+                <th>Fecha de Devolución</th>
+                <th>Costo</th>
+              </tr>
+            </thead>
+            <tbody id="search-results-body"></tbody>
+          </table>
+        </div>
+        <button id="close-popup-btn" class="btn-close-popup">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  `;
+
+  const rentalIdInput = document.getElementById("rental-id-input");
+  const searchBtn = document.getElementById("search-rental-btn");
+  const confirmBtn = document.getElementById("confirm-rental-btn");
+  const ticketContainer = document.getElementById("devolucion-ticket-container");
+  const searchPopup = document.getElementById("search-popup");
+  const closePopupBtn = document.getElementById("close-popup-btn");
+  const searchResultsBody = document.getElementById("search-results-body");
+
+  /* --- Buscar renta (abre popup) --- */
+  searchBtn.addEventListener("click", () => {
+    const searchValue = rentalIdInput.value.trim();
+    const filteredResults = buscarRentas(searchValue);
+
+    searchResultsBody.innerHTML = filteredResults
+      .map(
+        (item) => `
+        <tr class="search-result-row" data-rental-id="${item.id}">
+          <td>${item.id}</td>
+          <td>${item.cliente}</td>
+          <td>${item.pelicula}</td>
+          <td>${item.empleado}</td>
+          <td>${item.renta}</td>
+          <td>${item.devolucion}</td>
+          <td>${item.costo}</td>
+        </tr>`
+      )
+      .join("");
+
+    document.querySelectorAll(".search-result-row").forEach((row) => {
+      row.addEventListener("click", () => {
+        rentalIdInput.value = row.dataset.rentalId;
+        searchPopup.classList.remove("active");
+      });
+    });
+
+    searchPopup.classList.add("active");
+  });
+
+  closePopupBtn.addEventListener("click", () => searchPopup.classList.remove("active"));
+  searchPopup.addEventListener("click", (e) => {
+    if (e.target === searchPopup) searchPopup.classList.remove("active");
+  });
+
+  /* --- Confirmar devolución --- */
+  confirmBtn.addEventListener("click", () => {
+    const rentalId = rentalIdInput.value.trim();
+    const mockData = mockRentalData.find((item) => item.id.toString() === rentalId);
+    if (!mockData) return;
+
+    // Simula actualización de la fecha de devolución a la actual
+    const fechaActual = new Date().toLocaleString();
+
+    const updatedData = {
+      ...mockData,
+      devolucion: fechaActual, // se actualiza la devolución con la fecha actual
+    };
+
+    mostrarTicketDevolucion(updatedData);
+  });
+
+  /* --- Mostrar ticket --- */
+  function mostrarTicketDevolucion(data) {
+    const ticketContainer = document.getElementById("devolucion-ticket-container");
+
+    ticketContainer.innerHTML = `
+      <div class="devolucion-ticket">
+        <p><strong>Cliente:</strong> ${data.cliente}</p>
+        <p><strong>Película:</strong> ${data.pelicula}</p> 
+        <p><strong>Empleado:</strong> ${data.empleado}</p>
+        <p><strong>Fecha de renta:</strong> ${data.renta}</p>
+        <p><strong>Fecha de devolución:</strong> ${data.devolucion}</p>
+        <p><strong>Costo:</strong> ${data.costo}</p>
+        <div class="devolucion-ticket-actions">
+          <button id="cancel-operation-btn" class="btn-cancel-operation"><i class="fas fa-times"></i></button>
+          <button id="confirm-devolucion-btn" class="btn-confirm-devolucion"><i class="fas fa-check"></i></button>
+        </div>
+      </div>`;
+
+    document.getElementById("cancel-operation-btn").addEventListener("click", () => {
+      ticketContainer.innerHTML = "";
+    });
+
+    document.getElementById("confirm-devolucion-btn").addEventListener("click", () => {
+      ticketContainer.innerHTML = "";
     });
   }
 }
@@ -289,7 +387,7 @@ function listas() {
       </div>
     </div>`;
   }
-}
+}//aqui termina listas
 
 // Limpiar formulario de renta
 function limpiarFormularioRenta() {
@@ -306,9 +404,9 @@ function validarYMostrarTicket() {
   const pelicula = document.getElementById("pelicula").value.trim();
   const empleado = document.getElementById("empleado").value;
   const fechaRenta = document.getElementById("fechaRenta").value;
-  const fechaDevolucion = document.getElementById("fechaDevolucion").value;
+  const fechaDevolucion = null; // Siempre null hasta que se devuelva la película
 
-  if (!cliente || !pelicula || !empleado || !fechaRenta || !fechaDevolucion) {
+  if (!cliente || !pelicula || !empleado || !fechaRenta ) {// fechaDevolucion sera siempre null hasta que se devuelva la pelicula
     crearTicket(false, { mensaje: "Debes llenar todos los campos." });
     return;
   }
@@ -318,7 +416,7 @@ function validarYMostrarTicket() {
     pelicula,
     empleado,
     fechaRenta: new Date(fechaRenta).toLocaleString(),
-    fechaDevolucion: new Date(fechaDevolucion).toLocaleString(),
+    fechaDevolucion: "Pendiente",
   });
 }
 
@@ -358,7 +456,7 @@ function crearTicket(exito, datos) {
 
 btn_renta.addEventListener("click", formulario_renta);
 btn_cancelacion.addEventListener("click", formulario_cancelacion);
-btn_devolucion.addEventListener("click", () => {});
+btn_devolucion.addEventListener("click", formulario_devolucion);
 btn_ganancias.addEventListener("click", () => {});
 
 opciones.forEach((opcion) => {
@@ -367,3 +465,35 @@ opciones.forEach((opcion) => {
     listas();
   });
 });
+
+/* === Datos globales reutilizables para la tabla de busquedas */
+let rentalData = {
+  rental_id: null,
+  cliente_atendido: null,
+  pelicula_rentada: null,
+  empleado_que_atendio: null,
+  dia_de_renta: null,
+  dia_de_devolucion: null,
+  costo: null,
+};
+
+/* --- Base de datos simulada (mock) --- */
+const mockRentalData = [
+  { id: 1, cliente: "Juan Pérez", pelicula: "The Matrix", empleado: "Emma", renta: "2024-01-10", devolucion: "2024-01-17", costo: "$4.99" },
+    { id: 2, cliente: "María García", pelicula: "Inception", empleado: "Carlos", renta: "2024-02-12", devolucion: "2024-02-19", costo: "$5.50" },
+    { id: 3, cliente: "Luis López", pelicula: "Interstellar", empleado: "Sofía", renta: "2024-03-01", devolucion: "2024-03-08", costo: "$6.00" },
+    { id: 4, cliente: "Ana Martínez", pelicula: "Avatar", empleado: "Miguel", renta: "2024-04-15", devolucion: "2024-04-22", costo: "$7.25" },
+    { id: 5, cliente: "Pedro Sánchez", pelicula: "Titanic", empleado: "Laura", renta: "2024-05-20", devolucion: "2024-05-27", costo: "$5.75" },
+    { id: 1, cliente: "Juan Pérez", pelicula: "The Matrix", empleado: "Emma", renta: "2024-01-10", devolucion: "2024-01-17", costo: "$4.99" },
+    { id: 2, cliente: "María García", pelicula: "Inception", empleado: "Carlos", renta: "2024-02-12", devolucion: "2024-02-19", costo: "$5.50" },
+    { id: 3, cliente: "Luis López", pelicula: "Interstellar", empleado: "Sofía", renta: "2024-03-01", devolucion: "2024-03-08", costo: "$6.00" }
+  ];
+
+
+/* === Función común de búsqueda (reutilizable para cancelacion y devolucion) === */
+function buscarRentas(searchValue) {
+  return searchValue
+    ? mockRentalData.filter((item) => item.id.toString().includes(searchValue))
+    : mockRentalData;
+}
+
