@@ -1,27 +1,31 @@
-body {
-  background: #2a1b1b;
+/* Solo afecta al contenido dentro de #modulo-renta */
+#modulo-renta {
   font-family: "Poppins", sans-serif;
   color: #fff;
-}
-
-.renta-container {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  margin: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#modulo-renta .renta-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 30px;
   border-radius: 12px;
   background: rgba(60, 30, 30, 0.8);
-  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
   
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-
 }
 
-.renta-form {
+/* formulario principal*/
+#modulo-renta .renta-form {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -31,26 +35,28 @@ body {
   max-width: 900px; 
 }
 
-/* Contenedor de ambas fechas */
-.fechas {
+/* Contenedor de fechas */
+#modulo-renta .fechas {
   display: flex;
-  gap: 30px; /* espacio entre Día de Renta y Día de Devolución */
+  gap: 30px;
   flex-wrap: wrap;
 }
 
-.campo label, .campo-fecha label {
+#modulo-renta .campo label,
+#modulo-renta .campo-fecha label {
   display: block;
   font-weight: bold;
   margin-bottom: 5px;
 }
 
-.input-icon {
+/*campos e inputs*/
+#modulo-renta .input-icon {
   display: flex;
   align-items: center;
   gap: 5px;
 }
 
-.input-icon input {
+#modulo-renta .input-icon input {
   background: rgba(120, 120, 120, 0.5);
   border: none;
   border-radius: 5px;
@@ -60,20 +66,19 @@ body {
   outline: none;
 }
 
-/* Combobox*/
-.input-icon select {
+#modulo-renta .input-icon select {
   width: 180px;
   padding: 8px;
   border-radius: 5px;
   border: 1px solid #ccc;
   font-size: 14px;
-  background-color: rgba(255, 255, 255, 0.4); /* Blanco con 40 % opacidad */
+  background-color: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(4px);
-  color: #000; /* color del texto */
+  color: #000;
 }
 
-
-.btn-lupa {
+/*botones de acción*/
+#modulo-renta .btn-lupa {
   background: rgba(150, 20, 20, 0.6);
   border: none;
   border-radius: 6px;
@@ -82,8 +87,8 @@ body {
   transition: background 0.3s;
 }
 
-.btn-add{
-  background: rgb(255, 220, 120,0.6);
+#modulo-renta .btn-add {
+  background: rgba(255, 220, 120, 0.6);
   border: none;
   border-radius: 6px;
   padding: 8px 10px;
@@ -91,22 +96,22 @@ body {
   transition: background 0.3s;
 }
 
-
-.btn-lupa:hover {
+#modulo-renta .btn-lupa:hover {
   background: rgba(200, 30, 30, 0.9);
 }
 
-.btn-add:hover {
-  background: rgba(305, 230, 130, 0.9);
+#modulo-renta .btn-add:hover {
+  background: rgba(255, 230, 130, 0.9);
 }
 
-.divider {
+/*division y fechas*/
+#modulo-renta .divider {
   width: 2px;
-  background: rgba(255,255,255,0.3);
+  background: rgba(255, 255, 255, 0.3);
   align-self: stretch;
 }
 
-.date-input {
+#modulo-renta .date-input {
   background: rgba(120, 120, 120, 0.5);
   border: none;
   border-radius: 8px;
@@ -116,20 +121,22 @@ body {
   cursor: pointer;
 }
 
-/* Calendario semi transparente */
-.date-input::-webkit-calendar-picker-indicator {
+#modulo-renta .date-input::-webkit-calendar-picker-indicator {
   filter: invert(1);
   opacity: 0.8;
 }
 
-.acciones {
+/*acciones generales*/
+#modulo-renta .acciones {
   display: flex;
   justify-content: center;
   gap: 30px;
-  margin-top: 80px;
+  margin-top: 25px;
+  flex-wrap: wrap;
 }
 
-.btn-confirmar, .btn-limpiar {
+#modulo-renta .btn-confirmar,
+#modulo-renta .btn-limpiar {
   border: none;
   padding: 10px 25px;
   border-radius: 8px;
@@ -140,25 +147,28 @@ body {
   transition: background 0.3s;
 }
 
-.btn-confirmar:hover, .btn-limpiar:hover {
+#modulo-renta .btn-confirmar:hover,
+#modulo-renta .btn-limpiar:hover {
   background: rgba(200, 30, 30, 0.9);
 }
 
-.columna-izquierda,
-.columna-derecha {
+/*columnas*/
+#modulo-renta .columna-izquierda,
+#modulo-renta .columna-derecha {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-#ticket-container {
+/*ticket de renta */
+#modulo-renta #ticket-container {
   margin-top: 25px;
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
-.ticket-cuadro {
+#modulo-renta .ticket-cuadro {
   background: rgba(40, 20, 20, 0.9);
   border-radius: 12px;
   max-width: 550px;  
@@ -168,31 +178,39 @@ body {
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
   width: 90%;
   animation: aparecer 0.3s ease forwards;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
-.ticket-cuadro.exito {
+#modulo-renta .ticket-cuadro.exito {
+  margin-top: -35px; 
   border: 2px solid rgba(255, 220, 120, 0.9);
 }
 
-.ticket-cuadro.error {
+#modulo-renta .ticket-cuadro.error {
+  margin-top: -35px;
   border: 2px solid rgba(255, 60, 60, 0.9);
   text-align: center;
 }
 
-.ticket-cuadro h3 {
+#modulo-renta .ticket-cuadro h3 {
   color: rgba(255, 220, 120, 0.9);
   margin-bottom: 10px;
 }
 
-.ticket-btns {
+#modulo-renta .ticket-btns {
   margin-top: 15px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center; /* centra solo los botones */
+  width: 100%;
 }
 
-.btn-palomita,
-.btn-tacha {
+/* Botones dentro del ticket */
+#modulo-renta .btn-palomita,
+#modulo-renta .btn-tacha {
   border: none;
   border-radius: 8px;
   padding: 10px 15px;
@@ -201,20 +219,21 @@ body {
   transition: transform 0.2s;
 }
 
-.btn-palomita {
+#modulo-renta .btn-palomita {
   background: rgba(255, 220, 120, 0.8);
   color: #000;
 }
 
-.btn-tacha {
+#modulo-renta .btn-tacha {
   background: rgba(200, 40, 40, 0.8);
   color: #fff;
 }
 
-.btn-palomita:hover,
-.btn-tacha:hover {
+#modulo-renta .btn-palomita:hover,
+#modulo-renta .btn-tacha:hover {
   transform: scale(1.1);
 }
+
 
 @keyframes aparecer {
   from { opacity: 0; transform: translateY(10px); }
