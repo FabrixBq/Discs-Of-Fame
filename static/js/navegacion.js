@@ -1,7 +1,7 @@
 class Navegacion {
     constructor() {
         this.contenido = document.getElementById("contenido");
-        
+
         // Botones principales como constantes
         this.btn_renta = document.getElementById("btn-renta");
         this.btn_cancelacion = document.getElementById("bton-cancelacion");
@@ -18,15 +18,32 @@ class Navegacion {
         this.modulos = {};
         this.opcion_lista = 0;
         this.inicializarEventos();
+        this.botonActivo = null;
+
     }
 
     inicializarEventos() {
         // Botones principales
-        this.btn_renta.addEventListener("click", () => this.cargarModulo('renta'));
-        this.btn_cancelacion.addEventListener("click", () => this.cargarModulo('cancelacion'));
-        this.btn_devolucion.addEventListener("click", () => this.cargarModulo('devolucion'));
-        this.btn_listas.addEventListener("click", () => this.cargarModulo('listas'));
-        this.btn_ganancias.addEventListener("click", () => this.cargarModulo('ganancias'));
+        this.btn_renta.addEventListener("click", () => {
+            this.actualizarBotonActivo(this.btn_renta);
+            this.cargarModulo('renta');
+        });
+
+        this.btn_cancelacion.addEventListener("click", () => {
+            this.actualizarBotonActivo(this.btn_cancelacion);
+            this.cargarModulo('cancelacion');
+        });
+
+        this.btn_devolucion.addEventListener("click", () => {
+            this.actualizarBotonActivo(this.btn_devolucion);
+            this.cargarModulo('devolucion');
+        });
+
+        this.btn_ganancias.addEventListener("click", () => {
+            this.actualizarBotonActivo(this.btn_ganancias);
+            this.cargarModulo('ganancias');
+        });
+
 
         // Opciones del menú listas
         const opciones = [
@@ -45,6 +62,28 @@ class Navegacion {
             });
         });
     }
+
+    actualizarBotonActivo(nuevoBoton) {
+        // Si hay un botón activo anterior, lo restauramos
+        if (this.botonActivo) {
+            // Solo quitamos la clase si el nuevo botón es diferente
+            if (this.botonActivo !== nuevoBoton) {
+                this.botonActivo.classList.remove('active-visual');
+            }
+        }
+
+        // Caso especial: si el nuevo botón es "Listas" pero no se ha elegido una opción, no lo marcamos
+        if (nuevoBoton === this.btn_listas && this.opcion_lista === 0) {
+            this.botonActivo = null;
+            return;
+        }
+
+        // Activamos el nuevo botón
+        nuevoBoton.classList.add('active-visual');
+        this.botonActivo = nuevoBoton;
+    }
+
+
 
     registrarModulo(nombre, modulo) {
         this.modulos[nombre] = modulo;

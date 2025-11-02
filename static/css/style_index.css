@@ -136,6 +136,11 @@ body, html {
   font-weight: 600;
 }
 
+.menu-btn.active-visual {
+  background-color: #fff;
+  color: #4d1717;
+  font-weight: 600;
+}
 
 .menu-btn-non-active .menu-btn:last-child {
   margin-left: 70px; /* espacio adicional solo para "Cerrar" */
