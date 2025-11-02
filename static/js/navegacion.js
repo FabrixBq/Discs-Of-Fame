@@ -40,8 +40,8 @@ class Navegacion {
         });
 
         this.btn_ganancias.addEventListener("click", () => {
-            this.actualizarBotonActivo(this.btn_ganancias);
-            this.cargarModulo('ganancias');
+            this.actualizarBotonActivo(this.btn_ganancias)
+            this.cargarModulo('ganancias')
         });
 
 

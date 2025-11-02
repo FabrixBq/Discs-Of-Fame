@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     navegacion.registrarModulo('cancelacion', new ModuloCancelacion());
     navegacion.registrarModulo('devolucion', new ModuloDevolucion());
     navegacion.registrarModulo('listas', new ModuloListas());   
- //   navegacion.registrarModulo('ganancias', new ModuloGStaff()); 
+    navegacion.registrarModulo('ganancias', new modulo_gStaff()); 
     
     console.log('Aplicación inicializada - Módulos registrados');
 });

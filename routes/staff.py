@@ -12,8 +12,10 @@ def listar_staff():
         return jsonify({"error": "No se pudo conectar a la base de datos"}), 500
 
     cur = conn.cursor()
-    cur.execute("SELECT staff_id, first_name, last_name, address_id, email, store_id, active, username, last_update FROM staff;")
+    cur.execute("SELECT s.staff_id, s.first_name || ' ' || s.last_name AS empleado, s.email, s.store_id, s.last_update, SUM(p.amount) AS total_ganancias FROM payment p JOIN staff s ON p.staff_id = s.staff_id GROUP BY s.staff_id, empleado ORDER BY total_ganancias DESC")
+    
     rows = cur.fetchall()
+    
     cur.close()
     conn.close()
 
@@ -21,13 +23,12 @@ def listar_staff():
     for row in rows:
         staffs.append({
             "staff_id": row[0],
-            "first_name": row[1],
-            "last_name": row[2],
-            "address_id": row[3],
-            "email": row[4],
-            "store_id": row[5],
-            "active": row[6],
-            "username": row[7],
-            "last_update": str(row[8])
+            "empleado": row[1],
+            "email": row[2],
+            "store_id": row[3],
+            "last_update": str(row[4]),
+            "ganancias": row[5]
         })
+    
+    print(f"Datos a enviar: {staffs}")  # ← Y esto
     return jsonify(staffs)
