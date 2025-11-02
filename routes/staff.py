@@ -30,5 +30,5 @@ def listar_staff():
             "ganancias": row[5]
         })
     
-    print(f"Datos a enviar: {staffs}")  # ← Y esto
+    print(f"Datos a enviar: {staffs}")
     return jsonify(staffs)
