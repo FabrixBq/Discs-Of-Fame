@@ -10,6 +10,15 @@ class ModuloListas {
     cargar(contenedor) {
         contenedor.innerHTML = this.obtenerHTML();
         this.configurarEventos();
+
+        // Si la opción actual es "Rentas por Cliente", cargar los datos
+        if (this.opcionLista === 1) {
+            this.cargarRentasClientes();
+        } else if (this.opcionLista === 2) {
+            this.cargarDVDsNoDevueltos();
+        } else if (this.opcionLista === 3) {
+            this.cargarDVDsMasRentados();
+        }
     }
 
     obtenerHTML() {
@@ -44,13 +53,46 @@ class ModuloListas {
                             <th>Estado</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr><td>001</td><td>Juan Pérez</td><td>Avengers</td><td>2024-01-15</td><td>2024-01-20</td><td>Devuelto</td></tr>
-                        <tr><td>002</td><td>María García</td><td>Inception</td><td>2024-02-10</td><td>2024-02-17</td><td>Devuelto</td></tr>
+                    <tbody id="rentas-tbody">
+                        <!-- Cargar datos aquí dinámicamente -->
                     </tbody>
                 </table>
             </div>
         </div>`;
+    }
+
+    async cargarRentasClientes() {
+        try {
+            console.log("Haciendo fetch a /rentas/...");
+            const response = await fetch('/rentas/');
+            console.log('Response status:', response.status);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const rentas = await response.json();
+            console.log(rentas);
+
+            const tbody = document.getElementById('rentas-tbody');
+            if (rentas.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6">No hay datos de rentas</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = rentas.map(renta => `
+                <tr>
+                    <td>${renta.id_cliente}</td>
+                    <td>${renta.nombre}</td>
+                    <td>${renta.pelicula}</td>
+                    <td>${renta.fecha_renta}</td>
+                    <td>${renta.fecha_devolucion}</td>
+                    <td>${renta.estado}</td>
+                </tr>
+            `).join('');
+        } catch (error) {
+            console.error('Error al cargar las rentas de clientes:', error);
+        }
     }
 
     obtenerHTMLDVDsNoDevueltos() {
@@ -101,6 +143,16 @@ class ModuloListas {
                 </table>
             </div>
         </div>`;
+    }
+
+    async cargarDVDsNoDevueltos() {
+        // Aquí se haría una petición al backend para obtener los datos reales
+        console.log("Cargar datos de DVDs No Devueltos");
+    }
+
+    async cargarDVDsMasRentados() {
+        // Aquí se haría una petición al backend para obtener los datos reales
+        console.log("Cargar datos de DVDs Más Rentados");
     }
 
     configurarEventos() {

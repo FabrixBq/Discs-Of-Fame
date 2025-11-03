@@ -57,7 +57,7 @@ class modulo_gStaff {
                 <td>${staff.email}</td>
                 <td>${staff.store_id}</td>
                 <td>${staff.last_update}</td>
-                <td>$${staff.ganancias}</td>
+                <td>${staff.ganancias}</td>
             </tr>
         `).join('');
 
