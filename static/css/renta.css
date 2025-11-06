@@ -17,7 +17,7 @@
   border-radius: 12px;
   background: rgba(60, 30, 30, 0.8);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-  
+
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -32,7 +32,7 @@
   gap: 40px;
   flex-wrap: wrap;
   width: 100%;
-  max-width: 900px; 
+  max-width: 900px;
 }
 
 /* Contenedor de fechas */
@@ -171,8 +171,8 @@
 #modulo-renta .ticket-cuadro {
   background: rgba(40, 20, 20, 0.9);
   border-radius: 12px;
-  max-width: 550px;  
-  padding: 20px 25px 45px 25px; 
+  max-width: 550px;
+  padding: 20px 25px 45px 25px;
   color: #fff;
   text-align: left;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
@@ -183,7 +183,7 @@
 }
 
 #modulo-renta .ticket-cuadro.exito {
-  margin-top: -35px; 
+  margin-top: -35px;
   border: 2px solid rgba(255, 220, 120, 0.9);
 }
 
@@ -204,7 +204,7 @@
   justify-content: flex-end;
   gap: 15px;
   flex-wrap: wrap;
-  justify-content: center; /* centra solo los botones */
+  justify-content: center;
   width: 100%;
 }
 
@@ -234,8 +234,158 @@
   transform: scale(1.1);
 }
 
+/* ============================================*/
 
-@keyframes aparecer {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+.popup-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+  /* Hidden by default */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Show popup when active class is added */
+.popup-overlay.active {
+  display: flex;
+  opacity: 1;
+  visibility: visible;
+}
+
+.popup-content {
+  background: white;
+  border-radius: 10px;
+  padding: 30px;
+  color: #6e2929; 
+  border-radius: 10px;
+  max-width: 900px;
+  max-height: 50vh;
+  overflow-y: auto; /* permite scroll interno */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+  position: relative;
+  width: 90%;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.popup-content h3 {
+  margin: 0 0 15px 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+.separator-horizontal {
+  border: none;
+  border-top: 1px solid  #6e2929;
+  margin: 15px 0 25px 0;
+}
+
+/* Form container with two columns */
+.form-container {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 25px;
+}
+
+.form-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.separator-vertical {
+  width: 1px;
+  background-color: #6e2929;
+  margin: 0 10px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+}
+
+.form-group input {
+  padding: 10px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+  width: 300px;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.popup-buttons .btn-confirmar,
+.popup-buttons .btn-cancelar {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.popup-buttons .btn-confirmar {
+  margin-top: 20px; 
+  background-color: #eab357;
+  color: white;
+}
+
+.popup-buttons .btn-confirmar:hover {
+  background-color: #d4af37;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.popup-buttons .btn-cancelar {
+  margin-top: 20px; 
+  background-color: #f44336;
+  color: white;
+}
+
+.popup-buttons .btn-cancelar:hover {
+  background-color: #da190b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
 }

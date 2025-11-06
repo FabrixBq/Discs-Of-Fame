@@ -68,6 +68,54 @@ class ModuloRenta {
             </div>
         </div>
 
+        <!-- Popup nuevo cliente -->
+  <div id="popup-cliente" class="popup-overlay">
+    <div class="popup-content">
+      <h3>Datos del nuevo cliente</h3>
+      <hr class="separator-horizontal">
+
+      <form class="form-container">
+        <!-- Columna izquierda -->
+        <div class="form-column left-column">
+          <div class="form-group">
+            <label for="store-id">Store ID</label>
+            <input type="text" id="store-id" placeholder="">
+          </div>
+
+          <div class="form-group">
+            <label for="first-name">First Name</label>
+            <input type="text" id="first-name" placeholder="">
+          </div>
+
+          <div class="form-group">
+            <label for="last-name">Last Name</label>
+            <input type="text" id="last-name" placeholder="">
+          </div>
+        </div>
+
+        <div class="separator-vertical"></div>
+
+        <!-- Columna derecha -->
+        <div class="form-column right-column">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="">
+          </div>
+
+          <div class="form-group">
+            <label for="address-id">Address ID</label>
+            <input type="text" id="address-id" placeholder="">
+          </div>
+        </div>
+      </form>
+
+      <div class="popup-buttons">
+        <button type="button" id="guardarCliente" class="btn-confirmar">Guardar</button>
+        <button type="button" id="cerrarPopupCliente" class="btn-cancelar">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         `;
     }
@@ -78,6 +126,42 @@ class ModuloRenta {
         
         btnLimpiar.addEventListener("click", () => this.limpiarFormulario());
         btnConfirmar.addEventListener("click", () => this.validarYMostrarTicket());
+
+        //popup cliente
+        const popup = document.getElementById("popup-cliente");
+        const btnAdd = document.querySelector(".btn-add");
+        const btnCerrarPopup = document.getElementById("cerrarPopupCliente");
+        const btnGuardarCliente = document.getElementById("guardarCliente");
+
+        // Abrir popup
+        btnAdd.addEventListener("click", () => popup.classList.add("active"))
+
+         // Cerrar popup (botón cancelar)
+        btnCerrarPopup.addEventListener("click", () => popup.classList.remove("active"))
+
+       // Cerrar popup ( si se hace clic fuera)
+       popup.addEventListener("click", (e) => {
+      if (e.target === popup) popup.classList.remove("active")
+    })
+
+     // Guardar cliente
+      btnGuardarCliente.addEventListener("click", () => {
+      const storeId = document.getElementById("store-id").value.trim()
+      const nombre = document.getElementById("first-name").value.trim()
+      const apellido = document.getElementById("last-name").value.trim()
+      const email = document.getElementById("email").value.trim()
+      const direccion = document.getElementById("address-id").value.trim()
+
+      if (!storeId || !nombre || !apellido || !email || !direccion) {
+        alert("Todos los campos son obligatorios")
+        return
+      }
+
+      // Muestra el nombre completo en el campo cliente
+      document.getElementById("cliente").value = `${nombre} ${apellido}`
+      popup.classList.remove("active")
+    })
+
     }
 
     limpiarFormulario() {
