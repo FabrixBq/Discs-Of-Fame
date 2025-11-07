@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from routes.listas.clientes import clientes_bp
 from routes.dvds import dvds_bp
-#from routes.rental import rental_bp
+from routes.rental import rental_bp
 from routes.modulos.staff import staff_bp
 from routes.modulos.cancelacion import cancelacion_bp
 from routes.modulos.devolucion import devolucion_bp
@@ -16,7 +16,7 @@ def index():
 # Registrar rutas (Blueprints)
 app.register_blueprint(clientes_bp)
 app.register_blueprint(dvds_bp)
-#app.register_blueprint(rental_bp)
+app.register_blueprint(rental_bp)
 app.register_blueprint(staff_bp)
 app.register_blueprint(renta_bp)
 app.register_blueprint(devolucion_bp)

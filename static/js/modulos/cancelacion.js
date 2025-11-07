@@ -74,14 +74,21 @@ class ModuloCancelacion {
         });
     }
 
-    buscarRenta(searchValue) {
-        // Con Flask, aquí harías una petición al backend
-        console.log("Buscar renta para cancelación:", searchValue);
-        // const resultados = await api.buscarRentas(searchValue);
+   async buscarRenta(searchValue) {
+    if (!searchValue) return alert("Ingrese un ID de renta válido.");
+
+    try {
+        const response = await fetch(`/rentas/${searchValue}`);
+        if (!response.ok) throw new Error("Renta no encontrada");
         
-        // Por ahora simulamos resultados vacíos
-        this.mostrarResultadosBusqueda([]);
+        const data = await response.json();
+        this.mostrarResultadosBusqueda([data]); // lo pasamos como lista para mantener la estructura
+    } catch (error) {
+        console.error("Error al buscar renta:", error);
+        alert("No se encontró la renta o ocurrió un error.");
     }
+}
+
 
     mostrarResultadosBusqueda(resultados) {
         const searchResultsBody = document.getElementById("search-results-body");
@@ -124,24 +131,28 @@ class ModuloCancelacion {
         document.getElementById("search-popup").classList.remove("active");
     }
 
-    confirmarCancelacion(rentalId) {
-        if (!rentalId) return;
+    //confirmar cancelacion
+    async confirmarCancelacion(rentalId) {
+    if (!rentalId) return;
 
-        // Con Flask, aquí harías la petición de cancelación
-        console.log("Confirmar cancelación:", rentalId);
-        // const resultado = await api.cancelarRenta(rentalId);
-        
-        // Por ahora simulamos una respuesta
-        this.mostrarTicketCancelacion({
-            id: rentalId,
-            cliente: "Cliente Ejemplo",
-            pelicula: "Película Ejemplo",
-            empleado: "Empleado Ejemplo",
-            renta: "2024-01-10",
-            devolucion: "2024-01-17",
-            costo: "$5.00"
-        });
+    try {
+        const response = await fetch(`/rentas/${rentalId}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.error || "No se encontró la renta");
+            return;
+        }
+
+        // Mostrar los datos reales en el ticket
+        this.mostrarTicketCancelacion(data);
+
+    } catch (error) {
+        console.error("Error al obtener datos de la renta:", error);
+        alert("Error al conectar con el servidor");
     }
+}
+
 
     mostrarTicketCancelacion(data) {
         const ticketContainer = document.getElementById("cancellation-ticket-container");
