@@ -1,7 +1,5 @@
 class ModuloDevolucion {
-    constructor() {
-        // Este modulo no necesita inicializacion especial
-    }
+    constructor() {}
 
     cargar(contenedor) {
         contenedor.innerHTML = this.obtenerHTML();
@@ -23,8 +21,12 @@ class ModuloDevolucion {
                             class="devolucion-input"
                             placeholder="Ingrese ID de renta..." 
                         />
-                        <button id="search-rental-btn" class="btn-search-rental"><i class="fas fa-search"></i></button>
-                        <button id="confirm-rental-btn" class="btn-confirm-rental"><i class="fas fa-plus"></i></button>
+                        <button id="search-rental-btn" class="btn-search-rental">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button id="confirm-rental-btn" class="btn-confirm-rental">
+                            <i class="fas fa-plus"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -74,13 +76,21 @@ class ModuloDevolucion {
         });
     }
 
-    buscarRenta(searchValue) {
-        // Con Flask, aquí harías una petición al backend
-        console.log("Buscar renta:", searchValue);
-        // const resultados = await api.buscarRentas(searchValue);
-        
-        // Por ahora simulamos resultados vacíos
-        this.mostrarResultadosBusqueda([]);
+    // Buscar renta por ID y mostrar en popup
+    async buscarRenta(searchValue) {
+        if (!searchValue) return alert("Ingrese un ID de renta válido.");
+
+        try {
+            const response = await fetch(`/rentas/${searchValue}`);
+            const data = await response.json();
+
+            if (!response.ok) throw new Error(data.error || "Renta no encontrada");
+            
+            this.mostrarResultadosBusqueda([data]);
+        } catch (error) {
+            console.error("Error al buscar renta:", error);
+            alert("No se encontró la renta o ocurrió un error.");
+        }
     }
 
     mostrarResultadosBusqueda(resultados) {
@@ -102,7 +112,7 @@ class ModuloDevolucion {
             <td>${item.pelicula}</td>
             <td>${item.empleado}</td>
             <td>${item.renta}</td>
-            <td>${item.devolucion}</td>
+            <td>${item.devolucion || "—"}</td>
             <td>${item.costo}</td>
         </tr>`;
     }
@@ -124,25 +134,35 @@ class ModuloDevolucion {
         document.getElementById("search-popup").classList.remove("active");
     }
 
-    confirmarDevolucion(rentalId) {
-        if (!rentalId) return;
+    // Mostrar ticket previo a confirmación
+    async confirmarDevolucion(rentalId) {
+        if (!rentalId) return alert("Ingrese un ID válido.");
 
-        // Con Flask, aquí harías la petición de devolución
-        console.log("Confirmar devolución:", rentalId);
-        // const resultado = await api.devolverRenta(rentalId);
-        
-        // Por ahora simulamos una respuesta
-        this.mostrarTicketDevolucion({
-            id: rentalId,
-            cliente: "Cliente Ejemplo",
-            pelicula: "Película Ejemplo",
-            empleado: "Empleado Ejemplo",
-            renta: "2024-01-10",
-            devolucion: new Date().toLocaleString(),
-            costo: "$5.00"
-        });
+        try {
+            const response = await fetch(`/rentas/${rentalId}`);
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert(data.error || "No se encontró la renta.");
+                return;
+            }
+
+            // Verificar si ya fue devuelta
+            if (data.devolucion && data.devolucion !== "—" && data.devolucion !== null) {
+                alert("Esta renta ya fue devuelta. No se puede registrar otra devolución.");
+                return;
+            }
+
+            // Mostrar ticket con datos reales
+            this.mostrarTicketDevolucion(data);
+
+        } catch (error) {
+            console.error("Error al obtener datos de la renta:", error);
+            alert("Error al conectar con el servidor.");
+        }
     }
 
+    //  Mostrar ticket con datos reales
     mostrarTicketDevolucion(data) {
         const ticketContainer = document.getElementById("devolucion-ticket-container");
 
@@ -152,7 +172,7 @@ class ModuloDevolucion {
             <p><strong>Película:</strong> ${data.pelicula}</p> 
             <p><strong>Empleado:</strong> ${data.empleado}</p>
             <p><strong>Fecha de renta:</strong> ${data.renta}</p>
-            <p><strong>Fecha de devolución:</strong> ${data.devolucion}</p>
+            <p><strong>Fecha de devolución:</strong> ${data.devolucion || "—"}</p>
             <p><strong>Costo:</strong> ${data.costo}</p>
             <div class="devolucion-ticket-actions">
                 <button id="cancel-operation-btn" class="btn-cancel-operation"><i class="fas fa-times"></i></button>
@@ -160,14 +180,33 @@ class ModuloDevolucion {
             </div>
         </div>`;
 
+        // Cancelar operación (no cambia DB)
         document.getElementById("cancel-operation-btn").addEventListener("click", () => {
             ticketContainer.innerHTML = "";
         });
 
-        document.getElementById("confirm-devolucion-btn").addEventListener("click", () => {
-            // Aquí iría la confirmación final con el backend
-            ticketContainer.innerHTML = "";
-            document.getElementById("rental-id-input").value = "";
+        // Confirmar devolución (actualiza DB)
+        document.getElementById("confirm-devolucion-btn").addEventListener("click", async () => {
+            try {
+                const response = await fetch(`/api/devolucion/${data.id}/confirmar`, {
+                    method: "PUT"
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    alert(result.error || "Error al registrar la devolución.");
+                    return;
+                }
+
+                alert(`✅ ${result.mensaje}\n📅 Fecha registrada: ${result.fecha_devolucion}`);
+
+                ticketContainer.innerHTML = "";
+                document.getElementById("rental-id-input").value = "";
+            } catch (error) {
+                console.error(error);
+                alert("Error al registrar la devolución.");
+            }
         });
     }
 }

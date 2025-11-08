@@ -78,7 +78,7 @@ class ModuloCancelacion {
     if (!searchValue) return alert("Ingrese un ID de renta válido.");
 
     try {
-        const response = await fetch(`/rentas/${searchValue}`);
+        const response = await fetch(`/cancelacion/${searchValue}`);
         if (!response.ok) throw new Error("Renta no encontrada");
         
         const data = await response.json();
@@ -136,7 +136,7 @@ class ModuloCancelacion {
     if (!rentalId) return;
 
     try {
-        const response = await fetch(`/rentas/${rentalId}`);
+        const response = await fetch(`/cancelacion/${rentalId}`);
         const data = await response.json();
 
         if (!response.ok) {
