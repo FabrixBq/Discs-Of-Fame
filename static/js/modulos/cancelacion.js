@@ -175,10 +175,34 @@ class ModuloCancelacion {
             ticketContainer.innerHTML = "";
         });
 
-        document.getElementById("confirm-cancellation-btn").addEventListener("click", () => {
-            // Aquí iría la confirmación final con el backend
-            ticketContainer.innerHTML = "";
-            document.getElementById("rental-id-input").value = "";
-        });
+        document.getElementById("confirm-cancellation-btn").addEventListener("click", async () => {
+        if (!data || !data.id) {
+            alert("Primero busca una renta válida antes de cancelarla.");
+            return;
+        }
+
+        if (!confirm(`¿Seguro que deseas cancelar la renta #${data.id}? Esta acción no se puede deshacer.`)) return;
+
+        try {
+            const response = await fetch(`/cancelacion/${data.id}`, {   
+                method: "DELETE",
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                alert(result.message);
+
+                // Limpia el ticket y el campo de búsqueda
+                ticketContainer.innerHTML = "";
+                document.getElementById("rental-id-input").value = "";
+            } else {
+                alert(result.error || "No se pudo cancelar la renta.");
+            }
+        } catch (error) {
+            console.error("Error al cancelar la renta:", error);
+            alert("Error al conectar con el servidor.");
+        }
+    });
     }
 }

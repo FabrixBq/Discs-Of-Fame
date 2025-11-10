@@ -68,7 +68,7 @@ class ModuloRenta {
             </div>
         </div>
 
-        <!-- Popup nuevo cliente -->
+<!-- Popup nuevo cliente -->
   <div id="popup-cliente" class="popup-overlay">
     <div class="popup-content">
       <h3>Datos del nuevo cliente</h3>
@@ -116,6 +116,30 @@ class ModuloRenta {
     </div>
   </div>
 
+  <!--popup ver clientes existentes-->
+              <div id="search-popupCos" class="search-popup">
+                <div class="search-popup-content">
+                    <h3 class="search-popup-title">Clientes Actuales</h3>
+                    <div class="search-popup-table-container">
+                        <table class="search-popup-table">
+                            <thead>
+                                <tr>
+                                    <th>Cliente ID</th>
+                                    <th>Store ID</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Email</th>
+                                    <th>Addres ID</th>
+                                </tr>
+                            </thead>
+                            <tbody id="search-results-body"></tbody>
+                        </table>
+                    </div>
+                    <button id="cerrarPopupClienteBusqueda" class="btn-close-popup">Cerrar</button>
+                </div>
+            </div>
+        </div>
+
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         `;
     }
@@ -130,14 +154,16 @@ class ModuloRenta {
         //popup cliente
         const popup = document.getElementById("popup-cliente");
         const btnAdd = document.querySelector(".btn-add");
+        const btnLupaC = document.querySelector(".btn-lupa");
         const btnCerrarPopup = document.getElementById("cerrarPopupCliente");
         const btnGuardarCliente = document.getElementById("guardarCliente");
 
         // Abrir popup
         btnAdd.addEventListener("click", () => popup.classList.add("active"))
-
+        btnLupaC.addEventListener("click", () => this.abrirPopupBusquedaClientes());
          // Cerrar popup (botón cancelar)
         btnCerrarPopup.addEventListener("click", () => popup.classList.remove("active"))
+        
 
        // Cerrar popup ( si se hace clic fuera)
        popup.addEventListener("click", (e) => {
@@ -161,8 +187,93 @@ class ModuloRenta {
       document.getElementById("cliente").value = `${nombre} ${apellido}`
       popup.classList.remove("active")
     })
-
     }
+
+    abrirPopupBusquedaClientes() {
+    const popupCos = document.getElementById("search-popupCos");
+    const btnCerrarCos = document.getElementById("cerrarPopupClienteBusqueda");
+    const popupContent = popupCos.querySelector(".search-popup-content");
+
+    popupCos.classList.add("active");
+
+    // Evita que los clics dentro del contenido cierren el popup
+    popupContent.addEventListener("click", (e) => e.stopPropagation());
+
+    // Cerrar con botón o clic fuera
+    btnCerrarCos.addEventListener("click", () => popupCos.classList.remove("active"));
+    popupCos.addEventListener("click", (e) => {
+        if (e.target === popupCos) popupCos.classList.remove("active");
+    });
+
+    const q = document.getElementById("cliente").value.trim();
+    this.buscarClientes(q);
+}
+
+
+    // función principal que hace fetch al backend
+    async buscarClientes(q) {
+        try {
+            // encodeURIComponent y permitimos vacío
+            const response = await fetch(`/rentas/clientes?q=${encodeURIComponent(q)}`);
+            const data = await response.json();
+                if (!response.ok) {
+                    console.error(data);
+                    alert(data.error || "Error al buscar clientes");
+                    return;
+                }
+                this.mostrarResultadosClientes(data);
+            } catch (err) {
+                console.error("Error en buscarClientes:", err);
+                alert("Error al buscar clientes.");
+            }
+        }
+
+    // llenar la tabla del popup con los resultados
+    mostrarResultadosClientes(resultados) {
+        const tbody = document.getElementById("search-results-body");
+        tbody.innerHTML = resultados.map(item => this.obtenerFilaCliente(item)).join("");
+        this.configurarEventosResultadoClientes();
+        }
+    
+    // crear la fila HTML para cada cliente
+    obtenerFilaCliente(item) {
+        return `
+            <tr class="search-client-row" data-customer-id="${item.customer_id}">
+                <td>${item.customer_id}</td>
+                <td>${item.store_id}</td>
+                <td>${item.first_name}</td>
+                <td>${item.last_name}</td>
+                <td>${item.email}</td>
+                <td>${item.address_id}</td>
+            </tr>
+        `;
+    }
+  
+    // Cuando el usuario haga click sobre una fila, rellenar el campo cliente con el ID y cerrar popup
+    configurarEventosResultadoClientes() {
+    const popupCos = document.getElementById("search-popupCos");
+
+    document.querySelectorAll(".search-client-row").forEach(row => {
+        row.addEventListener("click", (e) => {
+            e.stopPropagation(); // evita que el clic llegue al overlay
+            const customerId = row.dataset.customerId;
+
+            // Mostrar solo el ID en el campo visible
+            document.getElementById("cliente").value = customerId;
+
+            // Guardar también en input oculto (si existe)
+            const hiddenInput = document.getElementById("cliente-id");
+            if (hiddenInput) hiddenInput.value = customerId;
+
+            // Cerrar el popup
+            popupCos.classList.remove("active");
+        });
+    });
+}
+
+
+//-- Funciones de renta --
+
 
     limpiarFormulario() {
         const campos = document.querySelectorAll("#modulo-renta input, #modulo-renta select");

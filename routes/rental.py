@@ -5,7 +5,6 @@ from database import get_connection
 rental_bp = Blueprint('rental_bp', __name__, url_prefix='/rentas')
 
 @rental_bp.route('/', methods=['GET'])
-
 def get_rentas():
     conn = get_connection()
 
@@ -77,3 +76,66 @@ def get_renta_por_id(rental_id):
     }
 
     return jsonify(renta)
+
+# Búsqueda de clientes (para seleccionar en el módulo de renta)
+@rental_bp.route('/clientes', methods=['GET'])
+def buscar_clientes():
+    from flask import request  # puedes ponerlo arriba también
+    q = request.args.get('q', '').strip()
+    conn = get_connection()
+
+    if not conn:
+        return jsonify({"error": "No se pudo conectar a la base de datos"}), 500
+
+    cur = conn.cursor()
+
+    try:
+        if q == '':
+            # Si no se pasa parámetro, trae los primeros 50 clientes
+            cur.execute("""
+                SELECT customer_id, store_id, first_name, last_name, email, address_id
+                FROM customer
+                ORDER BY customer_id
+                LIMIT 50;
+            """)
+        elif q.isdigit():
+            # Si es un número, busca por ID exacto
+            cur.execute("""
+                SELECT customer_id, store_id, first_name, last_name, email, address_id
+                FROM customer
+                WHERE customer_id = %s;
+            """, (int(q),))
+        else:
+            # Si es texto, busca por coincidencia en nombre o apellido
+            like_q = f"%{q}%"
+            cur.execute("""
+                SELECT customer_id, store_id, first_name, last_name, email, address_id
+                FROM customer
+                WHERE (first_name || ' ' || last_name) ILIKE %s
+                OR first_name ILIKE %s
+                OR last_name ILIKE %s
+                ORDER BY customer_id
+                LIMIT 100;
+            """, (like_q, like_q, like_q))
+
+        rows = cur.fetchall()
+        clientes = []
+        for r in rows:
+            clientes.append({
+                "customer_id": r[0],
+                "store_id": r[1],
+                "first_name": r[2],
+                "last_name": r[3],
+                "email": r[4],
+                "address_id": r[5],
+                "nombre_completo": f"{r[2]} {r[3]}"
+            })
+
+        return jsonify(clientes)
+    except Exception as e:
+        print("Error en buscar_clientes:", e)
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cur.close()
+        conn.close()
+
