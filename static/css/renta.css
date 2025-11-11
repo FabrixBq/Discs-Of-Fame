@@ -87,6 +87,15 @@
   transition: background 0.3s;
 }
 
+#modulo-renta .btn-lupaMov {
+  background: rgba(150, 20, 20, 0.6);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
 #modulo-renta .btn-add {
   background: rgba(255, 220, 120, 0.6);
   border: none;
@@ -97,6 +106,10 @@
 }
 
 #modulo-renta .btn-lupa:hover {
+  background: rgba(200, 30, 30, 0.9);
+}
+
+#modulo-renta .btn-lupaMov:hover {
   background: rgba(200, 30, 30, 0.9);
 }
 

@@ -28,7 +28,7 @@ class ModuloRenta {
                             <label>Película :</label>
                             <div class="input-icon">
                                 <input type="text" id="pelicula" placeholder="Buscar película...">
-                                <button class="btn-lupa"><i class="fa fa-search"></i></button>
+                                <button class="btn-lupaMov"><i class="fa fa-search"></i></button>
                             </div>
                         </div>
 
@@ -140,6 +140,30 @@ class ModuloRenta {
             </div>
         </div>
 
+      <!--popup ver peliculas existentes-->
+              <div id="search-popupMov" class="search-popup">
+                <div class="search-popup-content" id="search-popup-contentMov">
+                    <h3 class="search-popup-title">Peliculas Actuales</h3>
+                    <div class="search-popup-table-container">
+                        <table class="search-popup-table">
+                            <thead>
+                                <tr>
+                                    <th>Inventory ID</th>
+                                    <th>Film ID</th>
+                                    <th>Film Name</th>
+                                    <th>Store ID</th>
+                                    <th>Store Address</th>
+                                    <th>Category</th>
+                                </tr>
+                            </thead>
+                            <tbody id="search-results-bodyMov"></tbody>
+                        </table>
+                    </div>
+                    <button id="cerrarPopupMovieBusqueda" class="btn-close-popup">Cerrar</button>
+                </div>
+            </div>
+        </div>
+
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         `;
     }
@@ -155,12 +179,16 @@ class ModuloRenta {
         const popup = document.getElementById("popup-cliente");
         const btnAdd = document.querySelector(".btn-add");
         const btnLupaC = document.querySelector(".btn-lupa");
+        const btnLupaMov = document.querySelector(".btn-lupaMov");
+
         const btnCerrarPopup = document.getElementById("cerrarPopupCliente");
         const btnGuardarCliente = document.getElementById("guardarCliente");
+      
 
         // Abrir popup
         btnAdd.addEventListener("click", () => popup.classList.add("active"))
         btnLupaC.addEventListener("click", () => this.abrirPopupBusquedaClientes());
+        btnLupaMov.addEventListener("click", () => this.abrirPopupBusquedaMovies());
          // Cerrar popup (botón cancelar)
         btnCerrarPopup.addEventListener("click", () => popup.classList.remove("active"))
         
@@ -171,22 +199,51 @@ class ModuloRenta {
     })
 
      // Guardar cliente
-      btnGuardarCliente.addEventListener("click", () => {
-      const storeId = document.getElementById("store-id").value.trim()
-      const nombre = document.getElementById("first-name").value.trim()
-      const apellido = document.getElementById("last-name").value.trim()
-      const email = document.getElementById("email").value.trim()
-      const direccion = document.getElementById("address-id").value.trim()
+btnGuardarCliente.addEventListener("click", async () => {
+  const storeId = document.getElementById("store-id").value.trim();
+  const nombre = document.getElementById("first-name").value.trim();
+  const apellido = document.getElementById("last-name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const direccion = document.getElementById("address-id").value.trim();
 
-      if (!storeId || !nombre || !apellido || !email || !direccion) {
-        alert("Todos los campos son obligatorios")
-        return
-      }
+  if (!storeId || !nombre || !apellido || !email || !direccion) {
+    alert("Todos los campos son obligatorios");
+    return;
+  }
 
-      // Muestra el nombre completo en el campo cliente
-      document.getElementById("cliente").value = `${nombre} ${apellido}`
-      popup.classList.remove("active")
-    })
+  try {
+    const response = await fetch("/rentas/clientes", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        store_id: storeId,
+        first_name: nombre,
+        last_name: apellido,
+        email: email,
+        address_id: direccion,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (response.ok && result.success) {
+      // Aquí actualizamos el input cliente con el ID nuevo
+      document.getElementById("cliente").value = result.customer_id;
+      alert(result.message);
+
+      // Cerrar popup
+      popup.classList.remove("active");
+
+      // Limpiar formulario del popup
+      document.querySelectorAll("#popup-cliente input").forEach(i => i.value = "");
+    } else {
+      alert(result.error || "No se pudo crear el cliente");
+    }
+  } catch (error) {
+    console.error("Error al crear cliente:", error);
+    alert("Error al conectar con el servidor");
+  }
+});
     }
 
     abrirPopupBusquedaClientes() {
@@ -270,6 +327,92 @@ class ModuloRenta {
         });
     });
 }
+
+    abrirPopupBusquedaMovies() {
+    const popupMov = document.getElementById("search-popupMov");
+    const btnCerrarMov = document.getElementById("cerrarPopupMovieBusqueda");
+    const popupContent = popupMov.querySelector("#search-popup-contentMov");
+
+
+    popupMov.classList.add("active");
+
+    // Evita que los clics dentro del contenido cierren el popup
+    popupContent.addEventListener("click", (e) => e.stopPropagation());
+    // Cerrar con botón o clic fuera
+    btnCerrarMov.addEventListener("click", () => popupMov.classList.remove("active"));
+    popupMov.addEventListener("click", (e) => {
+        if (e.target === popupMov) popupMov.classList.remove("active");
+    });
+    //obtiene el valor del input de pelicula
+    const q = document.getElementById("pelicula").value.trim();
+    this.buscarMovies(q);
+
+    }
+
+    // función principal que hace fetch al backend
+    async buscarMovies(q) {
+        try {
+            // encodeURIComponent y permitimos vacío
+            const response = await fetch(`/rentas/movies?q=${encodeURIComponent(q)}`);
+            const data = await response.json();
+                if (!response.ok) {
+                    console.error(data);
+                }
+                this.mostrarResultadosMovies(data);
+            } catch (err) {
+                console.error("Error en buscarMovies:", err);
+                alert("Error al buscar películas.");
+            }
+        }
+    
+    // llenar la tabla del popup con los resultados
+    mostrarResultadosMovies(resultados) {
+        const tbody = document.getElementById("search-results-bodyMov");
+        tbody.innerHTML = resultados.map(item => this.obtenerFilaMovie(item)).join("");
+        this.configurarEventosResultadoMovies();
+        }
+    
+    // crear la fila HTML para cada película
+    obtenerFilaMovie(item) {
+        return `
+            <tr class="search-movie-row" data-inventory-id="${item.inventory_id}">
+                <td>${item.inventory_id}</td>
+                <td>${item.film_id}</td>
+                <td>${item.film_name}</td>
+                <td>${item.store_id}</td>
+                <td>${item.store_address}</td>
+                <td>${item.category}</td>
+            </tr>
+        `;
+    }
+    // Cuando el usuario haga click sobre una fila, rellenar el campo película con el ID y cerrar popup
+    configurarEventosResultadoMovies() {
+    const popupMov = document.getElementById("search-popupMov");
+
+    // Remueve listeners previos para evitar duplicados
+    document.querySelectorAll(".search-movie-row").forEach(row => {
+        row.replaceWith(row.cloneNode(true)); // limpia listeners
+    });
+
+    // Reasigna listeners a los nuevos nodos
+    document.querySelectorAll(".search-movie-row").forEach(row => {
+        row.addEventListener("click", (e) => {
+            e.stopPropagation(); // evita que el overlay también reciba el clic
+            const inventoryId = row.dataset.inventoryId;
+
+            // Muestra el inventory_id en el input visible
+            document.getElementById("pelicula").value = inventoryId;
+
+            //input oculto
+            const hiddenInput = document.getElementById("pelicula-id");
+            if (hiddenInput) hiddenInput.value = inventoryId;
+
+            // Cierra el popup
+            popupMov.classList.remove("active");
+        });
+    });
+}
+
 
 
 //-- Funciones de renta --

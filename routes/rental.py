@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from database import get_connection
 
 # Define el Blueprint para rental
@@ -139,3 +139,98 @@ def buscar_clientes():
         cur.close()
         conn.close()
 
+@rental_bp.route("/movies", methods=["GET"])
+def buscar_peliculas():
+    q = request.args.get("q", "").strip()
+    conn = get_connection()
+    if not conn:
+        return jsonify({"error": "No se pudo conectar a la base de datos"}), 500
+
+    cur = conn.cursor()
+
+    # 🔍 Consulta películas con datos de inventario, tienda y categoría
+    query = """
+        SELECT
+            i.inventory_id,
+            f.film_id,
+            f.title AS film_name,
+            s.store_id,
+            a.address AS store_address,
+            c.name AS category
+        FROM inventory i
+        JOIN film f ON i.film_id = f.film_id
+        JOIN store s ON i.store_id = s.store_id
+        JOIN address a ON s.address_id = a.address_id
+        JOIN film_category fc ON f.film_id = fc.film_id
+        JOIN category c ON fc.category_id = c.category_id
+        WHERE 
+        LOWER(f.title) LIKE LOWER(%s)
+        OR CAST(i.inventory_id AS TEXT) LIKE %s
+        ORDER BY f.title
+        LIMIT 30;
+         """
+    cur.execute(query, (f"%{q}%", f"%{q}%"))
+    data = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    # convertir a JSON
+    peliculas = [
+        {
+            "inventory_id": row[0],
+            "film_id": row[1],
+            "film_name": row[2],
+            "store_id": row[3],
+            "store_address": row[4],
+            "category": row[5],
+        }
+        for row in data
+    ]
+
+    return jsonify(peliculas)
+
+#agregar clientes
+@rental_bp.route("/clientes", methods=["POST"])
+def crear_cliente():
+    from flask import request
+    conn = get_connection()
+
+    if not conn:
+        return jsonify({"error": "No se pudo conectar a la base de datos"}), 500
+
+    data = request.get_json()
+    store_id = data.get("store_id")
+    first_name = data.get("first_name")
+    last_name = data.get("last_name")
+    email = data.get("email")
+    address_id = data.get("address_id")
+
+    if not all([store_id, first_name, last_name, email, address_id]):
+        return jsonify({"error": "Faltan campos obligatorios"}), 400
+
+    cur = conn.cursor()
+
+    try:
+        # Insertar nuevo cliente
+        query = """
+            INSERT INTO customer (store_id, first_name, last_name, email, address_id, activebool, create_date)
+            VALUES (%s, %s, %s, %s, %s, TRUE, CURRENT_DATE)
+            RETURNING customer_id;
+        """
+        cur.execute(query, (store_id, first_name, last_name, email, address_id))
+        new_id = cur.fetchone()[0]
+        conn.commit()
+
+        return jsonify({
+            "success": True,
+            "message": "Cliente creado exitosamente",
+            "customer_id": new_id
+        }), 201
+    except Exception as e:
+        conn.rollback()
+        print("Error al crear cliente:", e)
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cur.close()
+        conn.close()
