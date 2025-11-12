@@ -14,8 +14,8 @@ git clone https://github.com/FabrixBq/Discs-Of-Fame.git
 cd Discs-Of-Fame
 
 # Importar los contenedores construidos
-- docker import ContenedoresPreconstruidos/app_container.tar discs-of-fame-app
-- docker import ContenedoresPreconstruidos/db_container.tar dvdrental-db
+- docker import app_container.tar discs-of-fame-app
+- docker import db_container.tar dvdrental-db
 
 # Construcción y ejecución con Docker
 - Para levantar los contenedores (base de datos y aplicación Flask): docker-compose up --build
