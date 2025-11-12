@@ -148,7 +148,7 @@ def buscar_peliculas():
 
     cur = conn.cursor()
 
-    # 🔍 Consulta películas con datos de inventario, tienda y categoría
+    #  Consulta películas con datos de inventario, tienda y categoría
     query = """
         SELECT
             i.inventory_id,
@@ -231,6 +231,64 @@ def crear_cliente():
         conn.rollback()
         print("Error al crear cliente:", e)
         return jsonify({"error": str(e)}), 500
+    finally:
+        cur.close()
+        conn.close()
+
+@rental_bp.route("/nueva", methods=["POST"])
+def nueva_renta():
+    data = request.get_json() or {}
+
+    rental_date = data.get("rental_date")  # puede ser None
+    inventory_id = data.get("inventory_id")
+    customer_id = data.get("customer_id")
+    staff_id = data.get("staff_id")
+
+    if not all([inventory_id, customer_id, staff_id]):
+        return jsonify({"success": False, "error": "Faltan campos obligatorios (inventory_id, customer_id, staff_id)"}), 400
+
+    conn = get_connection()
+    if not conn:
+        print("ERROR: no hay conexión a BD")
+        return jsonify({"success": False, "error": "No se pudo conectar a la base de datos"}), 500
+
+    cur = conn.cursor()
+    try:
+        # si no te envían rental_date, usa NOW() del servidor
+        if not rental_date:
+            cur.execute("""
+                INSERT INTO rental (rental_date, inventory_id, customer_id, staff_id)
+                VALUES (NOW(), %s, %s, %s)
+                RETURNING rental_id;
+            """, (inventory_id, customer_id, staff_id))
+        else:
+            cur.execute("""
+                INSERT INTO rental (rental_date, inventory_id, customer_id, staff_id)
+                VALUES (%s, %s, %s, %s)
+                RETURNING rental_id;
+            """, (rental_date, inventory_id, customer_id, staff_id))
+
+        new_id_row = cur.fetchone()
+        if new_id_row is None:
+            # algo raro: no se devolvió id
+            conn.rollback()
+            print("INSERT hecho pero no RETURNING rental_id")
+            return jsonify({"success": False, "error": "No se obtuvo rental_id"}), 500
+
+        new_id = new_id_row[0]
+        conn.commit()
+        print(f"Renta creada OK - rental_id={new_id}")  # <- log visible en consola del servidor
+
+        return jsonify({
+            "success": True,
+            "message": f"Renta registrada correctamente. ID de renta: {new_id}",
+            "rental_id": new_id
+        }), 201
+
+    except Exception as e:
+        conn.rollback()
+        print("Error al crear renta:", e)   # <- ver esto en logs
+        return jsonify({"success": False, "error": str(e)}), 500
     finally:
         cur.close()
         conn.close()

@@ -413,8 +413,6 @@ btnGuardarCliente.addEventListener("click", async () => {
     });
 }
 
-
-
 //-- Funciones de renta --
 
 
@@ -485,12 +483,57 @@ btnGuardarCliente.addEventListener("click", async () => {
         const btnTacha = ticket.querySelector(".btn-tacha");
         
         if (btnPalomita) {
-            btnPalomita.addEventListener("click", () => { 
-                ticket.remove(); 
-                this.limpiarFormulario(); 
-            });
+        // Obtener datos de la renta desde los inputs
+        btnPalomita.addEventListener("click", async () => {
+        const customerId = document.getElementById("cliente").value.trim();
+        const inventoryId = document.getElementById("pelicula").value.trim();
+        const empleadoNombre = document.getElementById("empleado").value;
+        const fechaRenta = document.getElementById("fechaRenta").value;
+        
+        // Convertir el nombre del empleado a su ID (para la correcta referencia)
+        let staffId = null;
+        if (empleadoNombre === "Mike Hillyer") staffId = 1;
+        else if (empleadoNombre === "Jon Stephens") staffId = 2;
+        
+         // Validar nuevamente, ya se valido antes de crear el ticket pero es buena práctica
+        if (!customerId || !inventoryId || !staffId || !fechaRenta) {
+            alert("Faltan datos para registrar la renta");
+            return;
         }
-        if (btnTacha) {
+
+        try {
+            // Enviar al backend
+            const response = await fetch("/rentas/nueva", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    rental_date: fechaRenta,
+                    inventory_id: inventoryId,
+                    customer_id: customerId,
+                    staff_id: staffId
+                }),
+            });
+
+             // registra todo para depuración de errores
+              console.log("HTTP status:", response.status, response.statusText);
+
+             const result = await response.json();  // <-- puede lanzar si no hay JSON
+             console.log("Respuesta JSON del servidor:", result);
+
+            if (response.ok && result.success) {
+                alert(`Renta registrada correctamente (ID: ${result.rental_id})`);
+                ticket.remove();
+                this.limpiarFormulario();
+            } else {
+                alert("Error al registrar la renta: " + (result.error || result.message || "desconocido"));
+            }
+        } catch (err) {
+            console.error("Error en fetch /rentas/nueva:", err);
+            alert("Error al conectar con el servidor o procesar la respuesta. Mira la consola.");
+        }
+        
+            });
+    } if (btnTacha) {
             btnTacha.addEventListener("click", () => ticket.remove());
         }
     }
