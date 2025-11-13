@@ -1,0 +1,39 @@
+{
+  "name": "discs-of-fame",
+  "version": "1.0.0",
+  "description": "Aplicación de escritorio para la renta de discos",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "build": {
+    "appId": "com.discs.of.fame",
+    "productName": "Discs of Fame",
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "templates/**/*",
+      "static/**/*",
+      "app.py",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "venv/",
+        "to": "venv/"
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    }
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^24.0.0"
+  }
+}
