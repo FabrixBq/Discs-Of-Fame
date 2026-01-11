@@ -22,7 +22,7 @@ def get_connection():
         else:
             # Conexión local usando variables de entorno
             connection = psycopg2.connect(
-                host=os.getenv("DB_HOST", "localhost"),
+                host=os.getenv("DB_HOST", "postgres"),
                 database=os.getenv("DB_NAME"),
                 user=os.getenv("DB_USER"),
                 password=os.getenv("DB_PASSWORD"),

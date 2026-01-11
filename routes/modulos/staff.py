@@ -12,7 +12,19 @@ def listar_staff():
         return jsonify({"error": "No se pudo conectar a la base de datos"}), 500
 
     cur = conn.cursor()
-    cur.execute("SELECT s.staff_id, s.first_name || ' ' || s.last_name AS empleado, s.email, s.store_id, s.last_update, SUM(p.amount) AS total_ganancias FROM payment p JOIN staff s ON p.staff_id = s.staff_id GROUP BY s.staff_id, empleado ORDER BY total_ganancias DESC")
+    cur.execute("""
+                SELECT 
+                    s.staff_id, 
+                    s.first_name || ' ' || s.last_name AS empleado, 
+                    s.email, 
+                    s.store_id, 
+                    s.last_update, 
+                    SUM(p.amount) AS total_ganancias 
+                FROM payment p 
+                JOIN staff s ON p.staff_id = s.staff_id 
+                GROUP BY s.staff_id, empleado 
+                ORDER BY total_ganancias DESC
+                """)
     
     rows = cur.fetchall()
     
